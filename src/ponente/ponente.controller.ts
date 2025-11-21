@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { PonenteService } from './ponente.service';
 import { CreatePonenteDto } from './dto/create-ponente.dto';
-import { UpdatePonenteDto } from './dto/update-ponente.dto';
-
-@Controller('ponente')
+@Controller('ponentes')
 export class PonenteController {
   constructor(private readonly ponenteService: PonenteService) {}
-
   @Post()
-  create(@Body() createPonenteDto: CreatePonenteDto) {
-    return this.ponenteService.create(createPonenteDto);
+  crearPonente(@Body() createPonenteDto: CreatePonenteDto) {
+    return this.ponenteService.crearPonente(createPonenteDto);
   }
 
-  @Get()
-  findAll() {
-    return this.ponenteService.findAll();
-  }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ponenteService.findOne(+id);
+  findPonenteById(@Param('id', ParseIntPipe) id: number) {
+    return this.ponenteService.findPonenteById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePonenteDto: UpdatePonenteDto) {
-    return this.ponenteService.update(+id, updatePonenteDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ponenteService.remove(+id);
+  @Delete (':id')
+  eliminarPonente(@Param('id', ParseIntPipe) id: number) {
+    return this.ponenteService.eliminarPonente(id);
   }
 }

@@ -1,8 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Long, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Evento } from '../../evento/entities/evento.entity';
 @Entity()
 export class Asistente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({type: 'bigint'})
   id: number;
   @Column()
   nombre: string;

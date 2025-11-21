@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Auditorio } from './entities/auditorio.entity';
 import { CreateAuditorioDto } from './dto/create-auditorio.dto';
-import { UpdateAuditorioDto } from './dto/update-auditorio.dto';
-
 @Injectable()
 export class AuditorioService {
-  create(createAuditorioDto: CreateAuditorioDto) {
-    return 'This action adds a new auditorio';
-  }
+  constructor(
+    @InjectRepository(Auditorio)
+    private readonly auditorioRepository: Repository<Auditorio>,
+  ) {}
 
-  findAll() {
-    return `This action returns all auditorio`;
+  async crearAuditorio(data: CreateAuditorioDto): Promise<Auditorio> {
+    if (data.capacidad <= 0) {
+      throw new BadRequestException(
+        'La capacidad del auditorio debe ser mayor a cero',
+      );
+    }
+    const auditorio = this.auditorioRepository.create(data);
+    return this.auditorioRepository.save(auditorio);
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auditorio`;
+  async findAll(): Promise<Auditorio[]> {
+    return this.auditorioRepository.find();
   }
-
-  update(id: number, updateAuditorioDto: UpdateAuditorioDto) {
-    return `This action updates a #${id} auditorio`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auditorio`;
+  async findById(id: number): Promise<Auditorio> {
+    const auditorio = await this.auditorioRepository.findOne({ where: { id } });
+    if (!auditorio) {
+      throw new BadRequestException(
+        `No se encontró auditorio con id ${id}`,
+      );
+    }
+    return auditorio;
   }
 }
