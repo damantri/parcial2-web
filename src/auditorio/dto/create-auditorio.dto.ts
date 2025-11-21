@@ -1,1 +1,5 @@
-export class CreateAuditorioDto {}
+export class CreateAuditorioDto {
+  nombre: string;
+  capacidad: number;
+  ubicacion: string;
+}

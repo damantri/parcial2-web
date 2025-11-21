@@ -1,1 +1,15 @@
-export class Asistente {}
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Evento } from '../../evento/entities/evento.entity';
+@Entity()
+export class Asistente {
+  @PrimaryGeneratedColumn()
+  id: number;
+  @Column()
+  nombre: string;
+  @Column()
+  codigoEstudiante: string;
+  @Column()
+  email: string;
+  @ManyToOne(() => Evento, (evento) => evento.asistentes)
+  evento: Evento;
+}
